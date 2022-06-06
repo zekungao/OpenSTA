@@ -584,10 +584,22 @@ Network::findInstance(const char *path_name) const
   return findInstanceRelative(topInstance(), path_name);
 }
 
+// Instance*
+// Network::findInstanceRelative(const Instance *inst,
+// 			      const char *path_name) const
+// {
+//   Instance* found = findInstanceRelativeInternal(inst, path_name);
+//   if (found) return found;
+//   // chop the '\' and find it again
+
+// }
+
 Instance *
 Network::findInstanceRelative(const Instance *inst,
 			      const char *path_name) const
 {
+  Instance *direct = findChild(inst, path_name);
+  if (direct) return direct;
   char *first, *tail;
   pathNameFirst(path_name, first, tail);
   if (first) {
@@ -758,6 +770,10 @@ Net *
 Network::findNetRelative(const Instance *inst,
 			 const char *path_name) const
 {
+  Net *found_net = findNet(inst, path_name);
+  if (found_net)
+    return found_net;
+
   char *inst_path, *net_name;
   pathNameLast(path_name, inst_path, net_name);
   if (inst_path) {
