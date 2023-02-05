@@ -938,14 +938,14 @@ Table2::findValue(float value1,
     float y00 = tableValue(index1, index2);
     float x1l = axis1_->axisValue(index1);
     float x1u = axis1_->axisValue(index1 + 1);
-    float dx1 = (x1 - x1l) / (x1u - x1l);
+    double dx1 = (x1 - x1l) / (x1u - x1l);
     float y10 = tableValue(index1 + 1, index2);
     float y11 = tableValue(index1 + 1, index2 + 1);
     float x2l = axis2_->axisValue(index2);
     float x2u = axis2_->axisValue(index2 + 1);
-    float dx2 = (x2 - x2l) / (x2u - x2l);
+    double dx2 = (x2 - x2l) / (x2u - x2l);
     float y01 = tableValue(index1, index2 + 1);
-    float tbl_value
+    double tbl_value
       = (1 - dx1) * (1 - dx2) * y00
       +      dx1  * (1 - dx2) * y10
       +      dx1  *      dx2  * y11
