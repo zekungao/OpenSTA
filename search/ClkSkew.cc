@@ -34,6 +34,7 @@
 #include "SearchPred.hh"
 #include "Search.hh"
 #include "Crpr.hh"
+#include "Liberty.hh"
 
 namespace sta {
 
@@ -275,6 +276,10 @@ ClkSkews::findClkSkew(Vertex *src_vertex,
   VertexPathIterator src_iter(src_vertex, this);
   while (src_iter.hasNext()) {
     PathVertex *src_path = src_iter.next();
+    LibertyCell *src_cell = network_->libertyPort(src_path->pin(this))->libertyCell();
+    if (src_cell->isClockGate()) {
+      continue;
+    }
     Clock *src_clk = src_path->clock(this);
     if (src_rf->matches(src_path->transition(this))
 	&& src_path->minMax(this) == setup_hold
@@ -285,6 +290,10 @@ ClkSkews::findClkSkew(Vertex *src_vertex,
 	VertexPathIterator tgt_iter(tgt_vertex, this);
 	while (tgt_iter.hasNext()) {
 	  PathVertex *tgt_path = tgt_iter.next();
+          LibertyCell *tgt_cell = network_->libertyPort(tgt_path->pin(this))->libertyCell();
+          if (tgt_cell->isClockGate()) {
+            continue;
+          }
 	  Clock *tgt_clk = tgt_path->clock(this);
 	  if (tgt_clk == src_clk
 	      && tgt_path->isClock(this)
