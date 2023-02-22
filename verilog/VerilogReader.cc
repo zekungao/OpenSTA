@@ -28,6 +28,7 @@
 #include "Network.hh"
 #include "VerilogNamespace.hh"
 #include "verilog/VerilogReaderPvt.hh"
+#include "verilog/NameMapping.hh"
 
 extern int
 VerilogParse_parse();
@@ -1703,6 +1704,7 @@ private:
   BindingMap map_;
 };
 
+using namespace NameResolve;
 Instance *
 VerilogReader::linkNetwork(const char *top_cell_name,
 			   bool make_black_boxes,
@@ -1712,6 +1714,9 @@ VerilogReader::linkNetwork(const char *top_cell_name,
     Cell *top_cell = network_->findCell(library_, top_cell_name);
     VerilogModule *module = this->module(top_cell);
     if (module) {
+      network_->nameResolver = new ModuleList(module->name(), network_, this); 
+      network_->nameResolver->createModule(module->name(), module);
+      // network_->nameResolver->print();
       // Seed the recursion for expansion with the top level instance.
       Instance *top_instance = network_->makeInstance(top_cell, "", nullptr);
       VerilogBindingTbl bindings(zero_net_name_, one_net_name_);
