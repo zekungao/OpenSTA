@@ -905,13 +905,13 @@ Table2::findValue(float value1,
       return tableValue(0, 0);
     else {
       size_t index2 = axis2_->findAxisIndex(value2);
-      float x2 = value2;
-      float y00 = tableValue(0, index2);
-      float x2l = axis2_->axisValue(index2);
-      float x2u = axis2_->axisValue(index2 + 1);
-      float dx2 = (x2 - x2l) / (x2u - x2l);
-      float y01 = tableValue(0, index2 + 1);
-      float tbl_value
+      double x2 = value2;
+      double y00 = tableValue(0, index2);
+      double x2l = axis2_->axisValue(index2);
+      double x2u = axis2_->axisValue(index2 + 1);
+      double dx2 = (x2 - x2l) / (x2u - x2l);
+      double y01 = tableValue(0, index2 + 1);
+      double tbl_value
 	= (1 - dx2) * y00
 	+      dx2  * y01;
       return tbl_value;
@@ -919,13 +919,13 @@ Table2::findValue(float value1,
   }
   else if (size2 == 1) {
     size_t index1 = axis1_->findAxisIndex(value1);
-    float x1 = value1;
-    float y00 = tableValue(index1, 0);
-    float x1l = axis1_->axisValue(index1);
-    float x1u = axis1_->axisValue(index1 + 1);
-    float dx1 = (x1 - x1l) / (x1u - x1l);
-    float y10 = tableValue(index1 + 1, 0);
-    float tbl_value
+    double x1 = value1;
+    double y00 = tableValue(index1, 0);
+    double x1l = axis1_->axisValue(index1);
+    double x1u = axis1_->axisValue(index1 + 1);
+    double dx1 = (x1 - x1l) / (x1u - x1l);
+    double y10 = tableValue(index1 + 1, 0);
+    double tbl_value
       = (1 - dx1) * y00
       +      dx1  * y10;
     return tbl_value;
@@ -933,19 +933,19 @@ Table2::findValue(float value1,
   else {
     size_t index1 = axis1_->findAxisIndex(value1);
     size_t index2 = axis2_->findAxisIndex(value2);
-    float x1 = value1;
-    float x2 = value2;
-    float y00 = tableValue(index1, index2);
-    float x1l = axis1_->axisValue(index1);
-    float x1u = axis1_->axisValue(index1 + 1);
-    float dx1 = (x1 - x1l) / (x1u - x1l);
-    float y10 = tableValue(index1 + 1, index2);
-    float y11 = tableValue(index1 + 1, index2 + 1);
-    float x2l = axis2_->axisValue(index2);
-    float x2u = axis2_->axisValue(index2 + 1);
-    float dx2 = (x2 - x2l) / (x2u - x2l);
-    float y01 = tableValue(index1, index2 + 1);
-    float tbl_value
+    double x1 = value1;
+    double x2 = value2;
+    double y00 = tableValue(index1, index2);
+    double x1l = axis1_->axisValue(index1);
+    double x1u = axis1_->axisValue(index1 + 1);
+    double dx1 = (x1 - x1l) / (x1u - x1l);
+    double y10 = tableValue(index1 + 1, index2);
+    double y11 = tableValue(index1 + 1, index2 + 1);
+    double x2l = axis2_->axisValue(index2);
+    double x2u = axis2_->axisValue(index2 + 1);
+    double dx2 = (x2 - x2l) / (x2u - x2l);
+    double y01 = tableValue(index1, index2 + 1);
+    double tbl_value
       = (1 - dx1) * (1 - dx2) * y00
       +      dx1  * (1 - dx2) * y10
       +      dx1  *      dx2  * y11
