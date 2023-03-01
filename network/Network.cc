@@ -591,6 +591,8 @@ Instance *
 Network::findInstanceRelative(const Instance *inst,
 			      const char *path_name) const
 {
+  Instance* res = findChild(inst, path_name);
+  if (res) return res;
   char *first, *tail;
   pathNameFirst(path_name, first, tail);
   if (first) {
@@ -611,8 +613,7 @@ Network::findInstanceRelative(const Instance *inst,
     stringDelete(tail);
     return inst1;
   }
-  else
-    return findChild(inst, path_name);
+  return NULL;
 }
 
 void
