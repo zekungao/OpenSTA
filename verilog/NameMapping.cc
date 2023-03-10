@@ -109,6 +109,7 @@ Module::processModuleInst(VerilogModuleInst* s) {
   assert(smname);
   std::string submodname  = smname;
   Cell *cell = ml->network->findAnyCell(submodname.c_str());
+  if (!cell) return;
   VerilogModule* cellmod = ml->reader->module(cell);
   if (!cellmod) return processLibertyInstAsModule(s);
   addInstSymbol(instname, submodname);
@@ -145,7 +146,9 @@ Module::processLibertyInstAsModule(VerilogModuleInst* s) {
   assert(smname);
   std::string submodname  = smname;
   Cell *cell = ml->network->findAnyCell(submodname.c_str());
+  if (!cell) return;
   LibertyCell * libertycell = ml->network->libertyCell(cell);
+  if (!libertycell) return;
   addInstSymbol(instname, "");
   auto iter = libertycell->portIterator();
   VerilogNetSeq *pins = s->pins();
