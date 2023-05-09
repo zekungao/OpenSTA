@@ -762,6 +762,10 @@ Net *
 Network::findNetRelative(const Instance *inst,
 			 const char *path_name) const
 {
+  Net *found_net = findNet(inst, path_name);
+  if (found_net)
+    return found_net;
+
   char *inst_path, *net_name;
   pathNameLast(path_name, inst_path, net_name);
   if (inst_path) {
