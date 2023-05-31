@@ -37,6 +37,7 @@ public:
   // Find equivalents for cell (member of from_libs) in to_libs.
   LibertyCellSeq *equivs(LibertyCell *cell);
   
+  static bool ignoreDontUse;
 protected:
   void findEquivCells(const LibertyLibrary *library,
 		      LibertyCellHashMap &hash_matches);
