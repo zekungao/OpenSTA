@@ -48,6 +48,10 @@ EOL	\r?\n
 
 %%
 
+<COND_EXPR>{
+"\\".	{ sdf_token += yytext[1]; }
+}
+
 "/*"		{ BEGIN COMMENT; }
 <COMMENT>{
 

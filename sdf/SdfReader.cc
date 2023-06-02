@@ -18,6 +18,7 @@
 
 #include <stdarg.h>
 #include <ctype.h>
+#include <sstream>
 
 #include "DisallowCopyAssign.hh"
 #include "Error.hh"
@@ -1026,17 +1027,26 @@ SdfReader::sdfError(int id,
   va_end(args);
 }
 
+std::string
+removeSlash(std::string const& name)
+{
+  std::stringstream ss;
+  for (auto it = name.begin(); it != name.end(); ++it)
+    if (*it != '\\') ss << *it;
+  return ss.str();
+}
+
 Pin *
 SdfReader::findPin(const char *name)
 {
+  string path_name = name;
   if (path_) {
-    string path_name;
     stringPrint(path_name, "%s%c%s", path_, divider_, name);
-    Pin *pin = network_->findPin(path_name.c_str());
+    Pin *pin = network_->findPin(removeSlash(path_name).c_str());
     return pin;
   }
   else
-    return network_->findPin(name);
+    return network_->findPin(removeSlash(path_name).c_str());
 }
 
 Instance *
@@ -1045,9 +1055,9 @@ SdfReader::findInstance(const char *name)
   string inst_name = name;
   if (path_)
     stringPrint(inst_name, "%s%c%s", path_, divider_, name);
-  Instance *inst = network_->findInstance(inst_name.c_str());
+  Instance *inst = network_->findInstance(removeSlash(inst_name).c_str());
   if (inst == nullptr)
-    sdfWarn(195, "instance %s not found.", inst_name.c_str());
+    sdfWarn(195, "instance %s not found.", removeSlash(inst_name).c_str());
   return inst;
 }
 
