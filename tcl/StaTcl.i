@@ -429,6 +429,10 @@ using namespace sta;
   Tcl_SetObjResult(interp, list);
 }
 
+%typemap(in) CellSeq* {
+  $1 = tclListSeq<Cell*>($input, SWIGTYPE_p_Cell, interp);
+}
+
 %typemap(out) TmpCellSeq* {
   Tcl_Obj *list = Tcl_NewListObj(0, nullptr);
   CellSeq *cells = $1;
