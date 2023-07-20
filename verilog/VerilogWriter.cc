@@ -43,6 +43,14 @@ public:
 		Network *network);
   void writeModule(Instance *inst);
 
+  void setExcludeNotInLib(bool exclude_not_in_lib) {
+    exclude_not_in_lib_ = exclude_not_in_lib;
+  }
+
+  bool excludeNotInLib() const {
+    return exclude_not_in_lib_;
+  }
+
 protected:
   void writePorts(Cell *cell);
   void writePortDcls(Cell *cell);
@@ -64,6 +72,7 @@ protected:
   const char *filename_;
   bool sort_;
   bool include_pwr_gnd_;
+  bool exclude_not_in_lib_ ;
   CellSet remove_cells_;
   FILE *stream_;
   Network *network_;
@@ -77,6 +86,7 @@ void
 writeVerilog(const char *filename,
 	     bool sort,
 	     bool include_pwr_gnd_pins,
+	     bool exclude_not_in_lib,
 	     CellSeq *remove_cells,
 	     Network *network)
 {
@@ -85,6 +95,7 @@ writeVerilog(const char *filename,
     if (stream) {
       VerilogWriter writer(filename, sort, include_pwr_gnd_pins,
 			   remove_cells, stream, network);
+      writer.setExcludeNotInLib(exclude_not_in_lib);
       writer.writeModule(network->topInstance());
       fclose(stream);
     }
@@ -102,6 +113,7 @@ VerilogWriter::VerilogWriter(const char *filename,
   filename_(filename),
   sort_(sort),
   include_pwr_gnd_(include_pwr_gnd_pins),
+  exclude_not_in_lib_(false),
   stream_(stream),
   network_(network),
   unconnected_net_index_(1)
@@ -273,6 +285,9 @@ void
 VerilogWriter::writeChild(Instance *child)
 {
   Cell *child_cell = network_->cell(child);
+  LibertyCell *lib_cell = network_->libertyCell(child);
+  // Note: pt will report errors when there is no corresponding cell in lib
+  if (excludeNotInLib() && lib_cell == nullptr) return ;
   if (!remove_cells_.hasKey(child_cell)) {
     const char *child_name = network_->name(child);
     const char *child_vname = instanceVerilogName(child_name,
