@@ -24,7 +24,7 @@ void
 writeVerilog(const char *filename,
 	     bool sort,
 	     bool include_pwr_gnd,
-	     bool pt_compatible,
+	     bool exclude_not_in_lib,
 	     CellSeq *remove_cells,
 	     Network *network);
 

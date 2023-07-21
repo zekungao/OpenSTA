@@ -53,7 +53,7 @@ void
 write_verilog_cmd(const char *filename,
 		  bool sort,
 		  bool include_pwr_gnd,
-		  bool pt_compatible,
+		  bool exclude_not_in_lib,
 		  CellSeq *remove_cells)
 {
   // This does NOT want the SDC (cmd) network because it wants
@@ -62,7 +62,7 @@ write_verilog_cmd(const char *filename,
   Network *network = sta->network();
   writeVerilog(
     filename, sort, include_pwr_gnd, 
-    pt_compatible, remove_cells, network
+    exclude_not_in_lib, remove_cells, network
   );
   delete remove_cells;
 }
